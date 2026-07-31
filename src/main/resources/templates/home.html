@@ -1,18 +1,247 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8" />
-    <title>Home</title>
-    <style>
-        body { font-family: Arial, sans-serif; padding:40px }
-        .container { max-width:800px;margin:0 auto }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    background:#f4f6f9;
+}
+
+.wrapper{
+    display:flex;
+    min-height:100vh;
+}
+
+/* Sidebar */
+
+.sidebar{
+    width:250px;
+    background:#1f2937;
+    color:white;
+    display:flex;
+    flex-direction:column;
+}
+
+.logo{
+    text-align:center;
+    font-size:24px;
+    font-weight:700;
+    padding:25px;
+    border-bottom:1px solid rgba(255,255,255,.1);
+}
+
+.menu{
+    margin-top:20px;
+}
+
+.menu a{
+    display:block;
+    color:white;
+    text-decoration:none;
+    padding:15px 25px;
+    transition:.3s;
+    font-size:15px;
+}
+
+.menu a:hover{
+    background:#374151;
+    padding-left:35px;
+}
+
+.logout{
+    margin-top:auto;
+    border-top:1px solid rgba(255,255,255,.1);
+}
+
+.logout a{
+    display:block;
+    padding:18px 25px;
+    color:#ffb3b3;
+    text-decoration:none;
+}
+
+.logout a:hover{
+    background:#b91c1c;
+    color:white;
+}
+
+/* Main */
+
+.main{
+    flex:1;
+    padding:35px;
+}
+
+.header{
+    background:white;
+    padding:20px 30px;
+    border-radius:15px;
+    box-shadow:0 5px 15px rgba(0,0,0,.08);
+}
+
+.header h2{
+    margin-bottom:10px;
+    color:#1f2937;
+}
+
+.cards{
+    margin-top:30px;
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:20px;
+}
+
+.card{
+    background:white;
+    padding:25px;
+    border-radius:15px;
+    box-shadow:0 5px 15px rgba(0,0,0,.08);
+    transition:.3s;
+}
+
+.card:hover{
+    transform:translateY(-5px);
+}
+
+.card h3{
+    color:#374151;
+    margin-bottom:10px;
+}
+
+.card p{
+    color:#666;
+}
+
+.button{
+    margin-top:20px;
+    display:inline-block;
+    background:#2563eb;
+    color:white;
+    padding:10px 18px;
+    text-decoration:none;
+    border-radius:8px;
+}
+
+.button:hover{
+    background:#1d4ed8;
+}
+
+</style>
+
 </head>
+
 <body>
-<div class="container">
-    <h1>Selamat datang, <span th:text="${username}">User</span>!</h1>
-    <p>Anda berhasil login.</p>
-    <p><a th:href="@{/logout}">Logout</a></p>
+
+<div class="wrapper">
+
+    <!-- Sidebar -->
+
+    <div class="sidebar">
+
+        <div class="logo">
+            LATIHAN
+        </div>
+
+        <div class="menu">
+
+            <a th:href="@{/home}">
+                🏠 Dashboard
+            </a>
+
+            <a th:href="@{/employee}">
+                👥 Data Karyawan
+            </a>
+
+            <a th:href="@{/task}">
+                📋 Daily Task
+            </a>
+
+        </div>
+
+        <div class="logout">
+
+            <a th:href="@{/logout}">
+                🚪 Logout
+            </a>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- Content -->
+
+    <div class="main">
+
+        <div class="header">
+
+            <h2>
+                Selamat Datang,
+                <span th:text="${username}">User</span>
+            </h2>
+
+            <p>
+                Silakan pilih menu di sidebar untuk melihat data karyawan
+                atau daily task.
+            </p>
+
+        </div>
+
+
+
+        <div class="cards">
+
+            <div class="card">
+
+                <h3>👥 Data Karyawan</h3>
+
+                <p>
+                    Menampilkan data seluruh karyawan yang diambil
+                    dari Database ADM Server.
+                </p>
+
+                <a th:href="@{/employee}" class="button">
+                    Lihat Data
+                </a>
+
+            </div>
+
+
+
+            <div class="card">
+
+                <h3>📋 Daily Task</h3>
+
+                <p>
+                    Menampilkan data Daily Task dari
+                    Database IT Server.
+                </p>
+
+                <a th:href="@{/task}" class="button">
+                    Lihat Data
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
 </div>
+
 </body>
 </html>

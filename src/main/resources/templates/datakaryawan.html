@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Data Karyawan</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif}
+body{background:#f4f6f9;color:#111827}
+.wrapper{display:flex;min-height:100vh}
+.sidebar{width:250px;background:#1f2937;color:#fff;display:flex;flex-direction:column}
+.logo{text-align:center;font-size:24px;font-weight:700;padding:25px;border-bottom:1px solid rgba(255,255,255,.1)}
+.menu{margin-top:20px}.menu a,.logout a{display:block;color:#fff;text-decoration:none;padding:15px 25px;transition:.3s;font-size:15px}.menu a:hover{background:#374151;padding-left:35px}.logout{margin-top:auto;border-top:1px solid rgba(255,255,255,.1)}.logout a{color:#ffb3b3}.logout a:hover{background:#b91c1c;color:#fff}
+.main{flex:1;padding:35px}
+.header,.panel{background:#fff;padding:24px 28px;border-radius:15px;box-shadow:0 5px 15px rgba(0,0,0,.08)}
+.header h2{margin-bottom:8px;color:#111827}
+.panel{margin-top:22px;overflow:auto}
+table{width:100%;border-collapse:collapse;min-width:1100px}
+th,td{padding:12px 14px;border-bottom:1px solid #e5e7eb;text-align:left;font-size:14px;vertical-align:top}
+th{background:#f9fafb;color:#374151;position:sticky;top:0}
+.badge{display:inline-block;padding:4px 10px;border-radius:999px;background:#e0f2fe;color:#075985;font-size:12px}
+.empty{padding:20px;color:#6b7280}
+.back{display:inline-block;margin-top:18px;background:#2563eb;color:#fff;padding:10px 18px;text-decoration:none;border-radius:8px}
+.back:hover{background:#1d4ed8}
+</style>
+</head>
+<body>
+<div class="wrapper">
+    <div class="sidebar">
+        <div class="logo">LATIHAN</div>
+        <div class="menu">
+            <a th:href="@{/home}">🏠 Dashboard</a>
+            <a th:href="@{/employee}">👥 Data Karyawan</a>
+            <a th:href="@{/task}">📋 Daily Task</a>
+        </div>
+        <div class="logout">
+            <a th:href="@{/logout}">🚪 Logout</a>
+        </div>
+    </div>
+    <div class="main">
+        <div class="header">
+            <h2>Data Karyawan ADM</h2>
+            <p>Login sebagai <span th:text="${username}">User</span></p>
+        </div>
+        <div class="panel">
+            <div th:if="${#lists.isEmpty(employees)}" class="empty">Belum ada data karyawan.</div>
+            <table th:if="${!#lists.isEmpty(employees)}">
+                <thead>
+                    <tr>
+                        <th>NIK</th>
+                        <th>Nama</th>
+                        <th>Dept Kode</th>
+                        <th>Dept Nama</th>
+                        <th>Factory Nama</th>
+                        <th>Status</th>
+                        <th>Jenis Kelamin</th>
+                        <th> TMT</th>
+                        <th>Tempat</th>
+                        
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="employee : ${employees}">
+                        <td th:text="${employee.empnik}">001</td>
+                        <td th:text="${employee.empname}">Nama</td>
+                        <td th:text="${employee.dptkod}">D01</td>
+                        <td th:text="${employee.dptnam}">Dept</td>
+                        <td th:text="${employee.fctnam}">Factory</td>
+                        <td><span class="badge" th:text="${employee.empsts}">Aktif</span></td>
+                        <td th:text="${employee.empkel}">Kel</td>
+                        <td th:text="${employee.emptmt}">Tempat</td>
+                        <td th:text="${employee.empltp}">TMT</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <a class="back" th:href="@{/home}">Kembali ke Dashboard</a>
+    </div>
+</div>
+</body>
+</html>
