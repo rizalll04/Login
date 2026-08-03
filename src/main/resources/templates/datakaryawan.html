@@ -5,25 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Data Karyawan</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif}
-body{background:#f4f6f9;color:#111827}
-.wrapper{display:flex;min-height:100vh}
-.sidebar{width:250px;background:#1f2937;color:#fff;display:flex;flex-direction:column}
-.logo{text-align:center;font-size:24px;font-weight:700;padding:25px;border-bottom:1px solid rgba(255,255,255,.1)}
-.menu{margin-top:20px}.menu a,.logout a{display:block;color:#fff;text-decoration:none;padding:15px 25px;transition:.3s;font-size:15px}.menu a:hover{background:#374151;padding-left:35px}.logout{margin-top:auto;border-top:1px solid rgba(255,255,255,.1)}.logout a{color:#ffb3b3}.logout a:hover{background:#b91c1c;color:#fff}
-.main{flex:1;padding:35px}
-.header,.panel{background:#fff;padding:24px 28px;border-radius:15px;box-shadow:0 5px 15px rgba(0,0,0,.08)}
-.header h2{margin-bottom:8px;color:#111827}
-.panel{margin-top:22px;overflow:auto}
-table{width:100%;border-collapse:collapse;min-width:1100px}
-th,td{padding:12px 14px;border-bottom:1px solid #e5e7eb;text-align:left;font-size:14px;vertical-align:top}
-th{background:#f9fafb;color:#374151;position:sticky;top:0}
-.badge{display:inline-block;padding:4px 10px;border-radius:999px;background:#e0f2fe;color:#075985;font-size:12px}
-.empty{padding:20px;color:#6b7280}
-.back{display:inline-block;margin-top:18px;background:#2563eb;color:#fff;padding:10px 18px;text-decoration:none;border-radius:8px}
-.back:hover{background:#1d4ed8}
-</style>
+<link rel="stylesheet" th:href="@{/css/datakaryawan.css}">
 </head>
 <body>
 <div class="wrapper">
@@ -40,22 +22,53 @@ th{background:#f9fafb;color:#374151;position:sticky;top:0}
     </div>
     <div class="main">
         <div class="header">
-            <h2>Data Karyawan ADM</h2>
+            <h2>Data Karyawan</h2>
             <p>Login sebagai <span th:text="${username}">User</span></p>
         </div>
+        <form class="filter-form" method="get" th:action="@{/employee}">
+            <input type="text" name="nik" placeholder="Filter NIK" th:value="${nik}">
+            <input type="text" name="name" placeholder="Filter Nama" th:value="${name}">
+            <select name="factory">
+                <option value="">Semua Factory</option>
+                <option th:each="factoryOption : ${factoryOptions}"
+                        th:value="${factoryOption}"
+                        th:text="${factoryOption}"
+                        th:selected="${factoryOption == factory}">
+                    Factory
+                </option>
+            </select>
+            <select name="status">
+                <option value="">Semua Status</option>
+                <option th:each="statusOption : ${statusOptions}"
+                        th:value="${statusOption}"
+                        th:text="${statusOption}"
+                        th:selected="${statusOption == status}">
+                    Status
+                </option>
+            </select>
+            <select name="size">
+                <option value="10" th:selected="${pageSize == 10}">10 / halaman</option>
+                <option value="25" th:selected="${pageSize == 25}">25 / halaman</option>
+                <option value="50" th:selected="${pageSize == 50}">50 / halaman</option>
+            </select>
+            <input type="hidden" name="page" value="0">
+            <button type="submit">Terapkan Filter</button>
+            <a th:href="@{/employee}">Reset</a>
+        </form>
         <div class="panel">
-            <div th:if="${#lists.isEmpty(employees)}" class="empty">Belum ada data karyawan.</div>
+            <div th:if="${!hasFilter}" class="empty">Silakan isi filter terlebih dulu agar data tidak tampil semua.</div>
+            <div th:if="${hasFilter and #lists.isEmpty(employees)}" class="empty">Data karyawan tidak ditemukan untuk filter yang dipilih.</div>
             <table th:if="${!#lists.isEmpty(employees)}">
                 <thead>
                     <tr>
                         <th>NIK</th>
                         <th>Nama</th>
-                        <th>Dept Kode</th>
-                        <th>Dept Nama</th>
-                        <th>Factory Nama</th>
+                        <th>Kode Dept</th>
+                        <th>Dept</th>
+                        <th>Factory</th>
                         <th>Status</th>
                         <th>Jenis Kelamin</th>
-                        <th> TMT</th>
+                        <th>TMT</th>
                         <th>Tempat</th>
                         
                     </tr>
@@ -74,6 +87,19 @@ th{background:#f9fafb;color:#374151;position:sticky;top:0}
                     </tr>
                 </tbody>
             </table>
+            <div class="pagination" th:if="${hasFilter and totalItems > 0}">
+                <div class="pagination-info">
+                    Menampilkan <span th:text="${#lists.size(employees)}">0</span> dari
+                    <span th:text="${totalItems}">0</span> data
+                </div>
+                <div class="pagination-nav">
+                    <a th:if="${currentPage > 0}"
+                       th:href="@{/employee(nik=${nik},name=${name},factory=${factory},status=${status},size=${pageSize},page=${currentPage-1})}">Sebelumnya</a>
+                    <span>Halaman <span th:text="${currentPage + 1}">1</span> / <span th:text="${totalPages}">1</span></span>
+                    <a th:if="${currentPage + 1 < totalPages}"
+                       th:href="@{/employee(nik=${nik},name=${name},factory=${factory},status=${status},size=${pageSize},page=${currentPage+1})}">Berikutnya</a>
+                </div>
+            </div>
         </div>
         <a class="back" th:href="@{/home}">Kembali ke Dashboard</a>
     </div>
