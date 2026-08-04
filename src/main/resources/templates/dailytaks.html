@@ -49,13 +49,13 @@
                 <option value="10" th:selected="${pageSize == 10}">10 / halaman</option>
                 <option value="25" th:selected="${pageSize == 25}">25 / halaman</option>
                 <option value="50" th:selected="${pageSize == 50}">50 / halaman</option>
+                <option value="100" th:selected="${pageSize == 100}">100 / halaman</option>
             </select>
             <input type="hidden" name="page" value="0">
             <button type="submit">Terapkan Filter</button>
             <a th:href="@{/task}">Reset</a>
         </form>
         <div class="panel">
-            <div th:if="${!hasFilter}" class="empty">Silakan isi filter terlebih dulu agar data tidak tampil semua.</div>
             <div th:if="${hasFilter and #lists.isEmpty(tasks)}" class="empty">Data task tidak ditemukan untuk filter yang dipilih.</div>
             <table th:if="${!#lists.isEmpty(tasks)}">
                 <thead>
@@ -79,7 +79,7 @@
                     </tr>
                 </tbody>
             </table>
-            <div class="pagination" th:if="${hasFilter and totalItems > 0}">
+            <div class="pagination" th:if="${totalItems > 0}">
                 <div class="pagination-info">
                     Menampilkan <span th:text="${#lists.size(tasks)}">0</span> dari
                     <span th:text="${totalItems}">0</span> data

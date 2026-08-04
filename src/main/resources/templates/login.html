@@ -5,34 +5,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Login</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <style>
-        :root{
-            --bg:#f3f6fb;
-            --card:#ffffff;
-            --muted:#6b7280;
-            --accent:#2563eb;
-            --accent-600:#1d4ed8;
-            --danger:#ef4444;
-            --radius:12px;
-        }
-        *{box-sizing:border-box}
-        body{font-family:Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif;background:linear-gradient(180deg,#eef2ff 0%,var(--bg) 100%);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;margin:0}
-        .container{width:100%;max-width:420px}
-        .card{background:var(--card);border-radius:var(--radius);padding:28px;box-shadow:0 10px 30px rgba(15,23,42,0.06);border:1px solid rgba(15,23,42,0.04)}
-        .brand{display:flex;align-items:center;gap:12px;margin-bottom:18px}
-        .logo{width:44px;height:44px;background:linear-gradient(135deg,var(--accent),var(--accent-600));display:inline-flex;align-items:center;justify-content:center;border-radius:10px;color:white;font-weight:700}
-        h2{margin:0;font-size:20px}
-        p.lead{margin:6px 0 18px;color:var(--muted);font-size:13px}
-        label{display:block;font-size:13px;color:#111827;margin-bottom:6px}
-        .field{display:block;margin-bottom:12px}
-        input[type="text"],input[type="password"]{Width:100%;padding:12px 14px;border-radius:10px;border:1px solid rgba(15,23,42,0.08);background:#fff;outline:none;transition:box-shadow .12s,border-color .12s}
-        input:focus{box-shadow:0 6px 18px rgba(37,99,235,0.08);border-color:var(--accent)}
-        .error{color:var(--danger);font-size:13px;margin-bottom:8px}
-        .actions{display:flex;align-items:center;gap:12px;margin-top:8px}
-        button{background:var(--accent);color:white;padding:10px 16px;border-radius:10px;border:none;cursor:pointer;font-weight:600}
-        .foot{margin-top:16px;color:var(--muted);font-size:13px}
-        @media (max-width:420px){.card{padding:20px}}
-    </style>
+    <link rel="stylesheet" th:href="@{/css/login.css}">
 </head>
 <body>
 <div class="container">

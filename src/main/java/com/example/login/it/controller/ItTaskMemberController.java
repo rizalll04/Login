@@ -40,7 +40,7 @@ public class ItTaskMemberController {
         boolean hasFilter = hasText(nik) || hasText(factory) || hasText(status);
         List<ItTaskMember> filteredTasks = hasFilter
             ? itTaskMemberService.findByFilters(nik, factory, status)
-            : List.of();
+            : itTaskMemberService.findAll();
 
         int totalItems = filteredTasks.size();
         int totalPages = totalItems == 0 ? 0 : (int) Math.ceil((double) totalItems / pageSize);
@@ -67,7 +67,7 @@ public class ItTaskMemberController {
     }
 
     private int normalizePageSize(int requestedSize) {
-        List<Integer> allowedSizes = List.of(10, 25, 50);
+        List<Integer> allowedSizes = List.of(10, 25, 50, 100);
         return allowedSizes.contains(requestedSize) ? requestedSize : 10;
     }
 

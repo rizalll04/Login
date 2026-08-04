@@ -41,7 +41,7 @@ public class EmployeeController {
         boolean hasFilter = hasText(nik) || hasText(name) || hasText(factory) || hasText(status);
         List<Employee> filteredEmployees = hasFilter
             ? employeeService.findByFilters(nik, name, factory, status)
-            : List.of();
+            : employeeService.findAll();
 
         int totalItems = filteredEmployees.size();
         int totalPages = totalItems == 0 ? 0 : (int) Math.ceil((double) totalItems / pageSize);
@@ -69,7 +69,7 @@ public class EmployeeController {
     }
 
     private int normalizePageSize(int requestedSize) {
-        List<Integer> allowedSizes = List.of(10, 25, 50);
+        List<Integer> allowedSizes = List.of(10, 25, 50, 100);
         return allowedSizes.contains(requestedSize) ? requestedSize : 10;
     }
 
