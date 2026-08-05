@@ -4,7 +4,7 @@ import com.example.login.entity.User;
 import com.example.login.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
-import jakarta.annotation.PostConstruct;
+import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import java.util.Optional;
 

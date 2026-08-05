@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.example.login.it.entity.ItTaskMember;
 
-public interface ItTaskMemberRepository extends JpaRepository<ItTaskMember, Long> {
+public interface ItTaskMemberRepository extends JpaRepository<ItTaskMember, String> {
 
     List<ItTaskMember> findByEmpnik(String empnik);
 }

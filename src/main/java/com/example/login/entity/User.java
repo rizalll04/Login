@@ -1,11 +1,12 @@
 package com.example.login.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.SequenceGenerator;
-import jakarta.persistence.Id;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Id;
+import javax.persistence.Column;
 
 @Entity
 @Table(name = "USERS")
@@ -16,10 +17,10 @@ public class User {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "users_seq")
     private Long id;
 
-    @jakarta.persistence.Column(name = "USERNAME")
+    @Column(name = "USERNAME")
     private String username;
 
-    @jakarta.persistence.Column(name = "PASSWORD")
+    @Column(name = "PASSWORD")
     private String password;
 
     public User() { }

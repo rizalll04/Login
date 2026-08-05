@@ -3,7 +3,7 @@ package com.example.login.it.controller;
 import java.util.List;
 import java.util.Objects;
 
-import jakarta.servlet.http.HttpSession;
+import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;

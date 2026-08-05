@@ -1,26 +1,158 @@
-:root{
-    --bg:#f3f6fb;
-    --card:#ffffff;
-    --muted:#6b7280;
-    --accent:#1f2937;
-    --accent-600:#1f2937;
-    --danger:#ef4444;
-    --radius:12px;
+:root {
+    --bg: #f3f6fb;
+    --card: #ffffff;
+    --muted: #6b7280;
+    --accent: #1f2937;
+    --accent-600: #111827;
+    --danger: #ef4444;
+    --radius: 14px;
 }
-*{box-sizing:border-box}
-body{font-family:Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif;background:linear-gradient(180deg,#eef2ff 0%,var(--bg) 100%);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;margin:0}
-.container{width:100%;max-width:420px}
-.card{background:var(--card);border-radius:var(--radius);padding:28px;box-shadow:0 10px 30px rgba(15,23,42,0.06);border:1px solid rgba(15,23,42,0.04)}
-.brand{display:flex;align-items:center;gap:12px;margin-bottom:18px}
-.logo{width:44px;height:44px;background:linear-gradient(135deg,var(--accent),var(--accent-600));display:inline-flex;align-items:center;justify-content:center;border-radius:10px;color:white;font-weight:700}
-h2{margin:0;font-size:20px}
-p.lead{margin:6px 0 18px;color:var(--muted);font-size:13px}
-label{display:block;font-size:13px;color:#111827;margin-bottom:6px}
-.field{display:block;margin-bottom:12px}
-input[type="text"],input[type="password"]{width:100%;padding:12px 14px;border-radius:10px;border:1px solid rgba(15,23,42,0.08);background:#fff;outline:none;transition:box-shadow .12s,border-color .12s}
-input:focus{box-shadow:0 6px 18px rgba(37,99,235,0.08);border-color:var(--accent)}
-.error{color:var(--danger);font-size:13px;margin-bottom:8px}
-.actions{display:flex;align-items:center;gap:12px;margin-top:8px}
-button{background:var(--accent);color:white;padding:10px 16px;border-radius:10px;border:none;cursor:pointer;font-weight:600}
-.foot{margin-top:16px;color:var(--muted);font-size:13px}
-@media (max-width:420px){.card{padding:20px}}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Inter, system-ui, sans-serif;
+    background: linear-gradient(180deg, #eef2ff 0%, var(--bg) 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 24px;
+}
+
+.container {
+    width: 100%;
+    max-width: 420px;
+}
+
+.card {
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 32px;
+    box-shadow: 0 12px 35px rgba(0,0,0,.08);
+}
+
+/* ===== Brand ===== */
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.logo {
+    width: 70px;
+    height: 70px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.brand h2 {
+    font-size: 24px;
+    color: #111827;
+    margin-bottom: 4px;
+}
+
+.lead {
+    color: var(--muted);
+    font-size: 14px;
+}
+
+/* ===== Form ===== */
+
+.field {
+    margin-bottom: 18px;
+}
+
+label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+input[type="text"],
+input[type="password"] {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #d1d5db;
+    border-radius: 10px;
+    font-size: 14px;
+    transition: .2s;
+}
+
+input:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(31,41,55,.15);
+}
+
+.error {
+    margin-top: 5px;
+    color: var(--danger);
+    font-size: 13px;
+}
+
+/* ===== Button ===== */
+
+.actions {
+    margin-top: 25px;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 10px;
+    background: var(--accent);
+    color: white;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: .25s;
+}
+
+button:hover {
+    background: #111827;
+    transform: translateY(-2px);
+}
+
+button:active {
+    transform: translateY(0);
+}
+
+.foot {
+    margin-top: 20px;
+    text-align: center;
+    color: var(--muted);
+    font-size: 13px;
+}
+
+@media (max-width: 420px) {
+
+    .card {
+        padding: 24px;
+    }
+
+    .logo {
+        width: 55px;
+        height: 55px;
+    }
+
+    .brand h2 {
+        font-size: 20px;
+    }
+}

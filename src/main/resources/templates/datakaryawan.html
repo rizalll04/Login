@@ -10,11 +10,15 @@
 <body>
 <div class="wrapper">
     <div class="sidebar">
-        <div class="logo">LATIHAN</div>
+
+        <div class="logo">
+    <img th:src="@{/images/logo.png}" alt="Logo">
+    <span>LATIHAN</span>
+</div>
         <div class="menu">
-            <a th:href="@{/home}">🏠 Dashboard</a>
-            <a th:href="@{/employee}">👥 Data Karyawan</a>
-            <a th:href="@{/task}">📋 Daily Task</a>
+                <a th:href="@{/home}"> Dashboard</a>
+                <a th:href="@{/employee}" class="active"> Data Karyawan</a>
+                <a th:href="@{/task}"> Daily Task</a>
         </div>
         <div class="logout">
             <a th:href="@{/logout}">🚪 Logout</a>
