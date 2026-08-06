@@ -26,7 +26,7 @@
     <div class="main">
         <div class="header">
             <h2>Daily Task IT</h2>
-            <p>Login sebagai <span th:text="${username}">User</span></p>
+            <p>Informasi task harian karyawan.</p>
         </div>
         <form class="filter-form" method="get" th:action="@{/task}">
             <input type="text" name="nik" placeholder="Filter NIK" th:value="${nik}">
@@ -65,7 +65,7 @@
                     <tr>
                         <th>NIK</th>
                         <th>Factory</th>
-                        <th>Gudang</th>
+                        <th>Gedung</th>
                         <th>Masalah</th>
                         <th>Solusi</th>
                         <th>Status</th>
@@ -78,7 +78,16 @@
                         <td th:text="${task.tskgdg}">G01</td>
                         <td th:text="${task.tskmsl}">Masalah</td>
                         <td th:text="${task.tsksls}">Solusi</td>
-                        <td><span class="status" th:text="${task.tsksts}">Open</span></td>
+                        <td>
+    <span class="status"
+          th:text="${task.tsksts}"
+          th:classappend="
+            ${task.tsksts == 'SELESAI'} ? ' status-selesai' :
+            (${task.tsksts == 'PROGRES'} ? ' status-progres' :
+            (${task.tsksts == 'PENGAJUAN'} ? ' status-pengajuan' :
+            (${task.tsksts == 'PERBAIKAN'} ? ' status-perbaikan' : '')))">
+    </span>
+</td>
                     </tr>
                 </tbody>
             </table>
