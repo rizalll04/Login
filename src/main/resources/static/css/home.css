@@ -10,17 +10,32 @@ body{
 }
 
 .wrapper{
-    display:flex;
     min-height:100vh;
 }
 
+/* SIDEBAR TETAP */
 .sidebar{
+    position:fixed;
+    top:0;
+    left:0;
+
     width:250px;
+    height:100vh;
+
     background:linear-gradient(180deg,#1e3a8a,#1e293b,#0f172a);
     color:#fff;
+
     display:flex;
     flex-direction:column;
+
     box-shadow:8px 0 25px rgba(0,0,0,.25);
+}
+
+/* KONTEN */
+.main{
+    margin-left:250px;
+    min-height:100vh;
+    padding:35px;
 }
 
 .logo{
@@ -75,19 +90,27 @@ body{
 
 .logout{
     margin-top:auto;
+    padding:15px 18px;
     border-top:1px solid rgba(255,255,255,.1);
 }
 
 .logout a{
-    display:block;
-    padding:18px 25px;
-    color:#ffb3b3;
+    display:flex;
+    align-items:center;
+    gap:12px;
+
+    padding:14px 18px;
+    border-radius:12px;
+
+    color:#fca5a5;
     text-decoration:none;
+
+    transition:.3s;
 }
 
 .logout a:hover{
-    background:#b91c1c;
-    color:white;
+    background:rgba(239,68,68,.18);
+    color:#fff;
 }
 
 .main{
