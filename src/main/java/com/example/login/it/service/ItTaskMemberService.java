@@ -3,6 +3,8 @@ package com.example.login.it.service;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,7 +32,7 @@ public class ItTaskMemberService {
             .filter(task -> containsIgnoreCase(task.getEmpnik(), nik))
             .filter(task -> equalsIgnoreCase(task.getTskfct(), factory))
             .filter(task -> equalsIgnoreCase(task.getTsksts(), status))
-            .toList();
+            .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true, transactionManager = "itTransactionManager")
@@ -42,7 +44,7 @@ public class ItTaskMemberService {
             .filter(value -> !value.isEmpty())
             .distinct()
             .sorted(String.CASE_INSENSITIVE_ORDER)
-            .toList();
+            .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true, transactionManager = "itTransactionManager")
@@ -54,11 +56,11 @@ public class ItTaskMemberService {
             .filter(value -> !value.isEmpty())
             .distinct()
             .sorted(String.CASE_INSENSITIVE_ORDER)
-            .toList();
+            .collect(Collectors.toList());
     }
 
     private boolean containsIgnoreCase(String source, String query) {
-        if (query == null || query.isBlank()) {
+        if (query == null || query.trim().isEmpty()) {
             return true;
         }
         if (source == null) {
@@ -70,7 +72,7 @@ public class ItTaskMemberService {
     }
 
     private boolean equalsIgnoreCase(String source, String query) {
-        if (query == null || query.isBlank()) {
+        if (query == null || query.trim().isEmpty()) {
             return true;
         }
         if (source == null) {

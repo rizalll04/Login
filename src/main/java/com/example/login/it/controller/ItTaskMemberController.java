@@ -2,6 +2,8 @@ package com.example.login.it.controller;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Arrays;
+import java.util.Collections;
 
 import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
@@ -63,22 +65,22 @@ public class ItTaskMemberController {
     }
 
     private boolean hasText(String value) {
-        return value != null && !value.isBlank();
+        return value != null && !value.trim().isEmpty();
     }
 
     private int normalizePageSize(int requestedSize) {
-        List<Integer> allowedSizes = List.of(10, 25, 50, 100);
+        List<Integer> allowedSizes = Arrays.asList(10, 25, 50, 100);
         return allowedSizes.contains(requestedSize) ? requestedSize : 10;
     }
 
     private <T> List<T> paginate(List<T> source, int page, int size) {
         if (source.isEmpty()) {
-            return List.of();
+            return Collections.emptyList();
         }
         int fromIndex = page * size;
         int toIndex = Math.min(fromIndex + size, source.size());
         if (fromIndex >= source.size() || fromIndex < 0) {
-            return List.of();
+            return Collections.emptyList();
         }
         return source.subList(fromIndex, toIndex);
     }

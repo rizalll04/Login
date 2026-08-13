@@ -3,7 +3,10 @@ package com.example.login.adm.service;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
-
+import java.time.LocalDate;
+import java.util.stream.Collectors;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,7 +34,7 @@ public class EmployeeService {
             .filter(employee -> containsIgnoreCase(employee.getEmpname(), name))
             .filter(employee -> equalsIgnoreCase(employee.getFctnam(), factory))
             .filter(employee -> equalsIgnoreCase(employee.getEmpsts(), status))
-            .toList();
+            .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true, transactionManager = "admTransactionManager")
@@ -43,7 +46,7 @@ public class EmployeeService {
             .filter(value -> !value.isEmpty())
             .distinct()
             .sorted(String.CASE_INSENSITIVE_ORDER)
-            .toList();
+            .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true, transactionManager = "admTransactionManager")
@@ -55,11 +58,11 @@ public class EmployeeService {
             .filter(value -> !value.isEmpty())
             .distinct()
             .sorted(String.CASE_INSENSITIVE_ORDER)
-            .toList();
+            .collect(Collectors.toList());
     }
 
     private boolean containsIgnoreCase(String source, String query) {
-        if (query == null || query.isBlank()) {
+        if (query == null || query.trim().isEmpty()) {
             return true;
         }
         if (source == null) {
@@ -71,7 +74,7 @@ public class EmployeeService {
     }
 
     private boolean equalsIgnoreCase(String source, String query) {
-        if (query == null || query.isBlank()) {
+        if (query == null || query.trim().isEmpty()) {
             return true;
         }
         if (source == null) {
@@ -79,4 +82,38 @@ public class EmployeeService {
         }
         return source.trim().equalsIgnoreCase(query.trim());
     }
+    @Transactional(readOnly = true, transactionManager = "admTransactionManager")
+public List<Employee> filterNewEmployees(List<Employee> employees) {
+
+    LocalDate today = LocalDate.now();
+    LocalDate batas = today.minusDays(30);
+
+    DateTimeFormatter formatter =
+            DateTimeFormatter.ofPattern("yyyy/MM/dd");
+
+    return employees.stream()
+        .filter(employee -> {
+
+            if (employee.getEmptmt() == null ||
+                employee.getEmptmt().trim().isEmpty()) {
+                return false;
+            }
+
+            try {
+
+                LocalDate tmt = LocalDate.parse(
+                    employee.getEmptmt().trim(),
+                    formatter
+                );
+
+                return !tmt.isBefore(batas)
+                    && !tmt.isAfter(today);
+
+            } catch (DateTimeParseException e) {
+                return false;
+            }
+
+        })
+        .collect(Collectors.toList());
+}
 }

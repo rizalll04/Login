@@ -91,19 +91,57 @@
                     </tr>
                 </tbody>
             </table>
-            <div class="pagination" th:if="${totalItems > 0}">
-                <div class="pagination-info">
-                    Menampilkan <span th:text="${#lists.size(tasks)}">0</span> dari
-                    <span th:text="${totalItems}">0</span> data
-                </div>
-                <div class="pagination-nav">
-                    <a th:if="${currentPage > 0}"
-                       th:href="@{/task(nik=${nik},factory=${factory},status=${status},size=${pageSize},page=${currentPage-1})}">Sebelumnya</a>
-                    <span>Halaman <span th:text="${currentPage + 1}">1</span> / <span th:text="${totalPages}">1</span></span>
-                    <a th:if="${currentPage + 1 < totalPages}"
-                       th:href="@{/task(nik=${nik},factory=${factory},status=${status},size=${pageSize},page=${currentPage+1})}">Berikutnya</a>
-                </div>
-            </div>
+          <div class="pagination" th:if="${totalItems > 0}">
+
+    <!-- INFO DATA -->
+    <div class="pagination-info">
+        Menampilkan
+        <strong th:text="${#lists.size(tasks)}">0</strong>
+        dari
+        <strong th:text="${totalItems}">0</strong>
+        data
+    </div>
+
+    <!-- NAVIGASI -->
+    <div class="pagination-nav">
+
+        <!-- SEBELUMNYA -->
+        <a class="page-btn"
+           th:if="${currentPage > 0}"
+           th:href="@{/task(
+               nik=${nik},
+               factory=${factory},
+               status=${status},
+               size=${pageSize},
+               page=${currentPage - 1}
+           )}">
+            ← Sebelumnya
+        </a>
+
+        <!-- NOMOR HALAMAN -->
+        <span class="page-number">
+            Halaman
+            <strong th:text="${currentPage + 1}">1</strong>
+            dari
+            <strong th:text="${totalPages}">1</strong>
+        </span>
+
+        <!-- BERIKUTNYA -->
+        <a class="page-btn"
+           th:if="${currentPage + 1 < totalPages}"
+           th:href="@{/task(
+               nik=${nik},
+               factory=${factory},
+               status=${status},
+               size=${pageSize},
+               page=${currentPage + 1}
+           )}">
+            Berikutnya →
+        </a>
+
+    </div>
+
+</div>
         </div>
         <a class="back" th:href="@{/home}">Kembali ke Dashboard</a>
     </div>

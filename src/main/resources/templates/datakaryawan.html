@@ -50,6 +50,10 @@
                     Status
                 </option>
             </select>
+            <select name="tmtFilter">
+    <option value="">Semua TMT</option>
+    <option value="30" th:selected="${tmtFilter == '30'}">Karyawan Baru (30 Hari)</option>
+</select>
             <select name="size">
                 <option value="10" th:selected="${pageSize == 10}">10 / halaman</option>
                 <option value="25" th:selected="${pageSize == 25}">25 / halaman</option>
@@ -91,18 +95,62 @@
                     </tr>
                 </tbody>
             </table>
+
             <div class="pagination" th:if="${totalItems > 0}">
-                <div class="pagination-info">
-                    Menampilkan <span th:text="${#lists.size(employees)}">0</span> dari
-                    <span th:text="${totalItems}">0</span> data
-                </div>
-                <div class="pagination-nav">
-                    <a th:if="${currentPage > 0}"
-                       th:href="@{/employee(nik=${nik},name=${name},factory=${factory},status=${status},size=${pageSize},page=${currentPage-1})}">Sebelumnya</a>
-                    <span>Halaman <span th:text="${currentPage + 1}">1</span> / <span th:text="${totalPages}">1</span></span>
-                    <a th:if="${currentPage + 1 < totalPages}"
-                       th:href="@{/employee(nik=${nik},name=${name},factory=${factory},status=${status},size=${pageSize},page=${currentPage+1})}">Berikutnya</a>
-                </div>
+
+    <!-- INFO DATA -->
+    <div class="pagination-info">
+        Menampilkan
+        <strong th:text="${#lists.size(employees)}">0</strong>
+        dari
+        <strong th:text="${totalItems}">0</strong>
+        data
+    </div>
+
+    <!-- NAVIGASI -->
+    <div class="pagination-nav">
+
+        <!-- SEBELUMNYA -->
+        <a class="page-btn"
+           th:if="${currentPage > 0}"
+           th:href="@{/employee(
+               nik=${nik},
+               name=${name},
+               factory=${factory},
+               status=${status},
+               tmtFilter=${tmtFilter},
+               size=${pageSize},
+               page=${currentPage - 1}
+           )}">
+            ← Sebelumnya
+        </a>
+
+        <!-- HALAMAN -->
+        <span class="page-number">
+            Halaman
+            <strong th:text="${currentPage + 1}">1</strong>
+            dari
+            <strong th:text="${totalPages}">1</strong>
+        </span>
+
+        <!-- BERIKUTNYA -->
+        <a class="page-btn"
+           th:if="${currentPage + 1 < totalPages}"
+           th:href="@{/employee(
+               nik=${nik},
+               name=${name},
+               factory=${factory},
+               status=${status},
+               tmtFilter=${tmtFilter},
+               size=${pageSize},
+               page=${currentPage + 1}
+           )}">
+            Berikutnya →
+        </a>
+
+    </div>
+
+</div>
             </div>
         </div>
         <a class="back" th:href="@{/home}">Kembali ke Dashboard</a>
