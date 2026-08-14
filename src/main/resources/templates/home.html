@@ -37,6 +37,13 @@
     Daily Task
 </a>
 
+<a th:if="${session.role == 'ADMIN'}"
+   th:href="@{/users}">
+    Kelola User
+</a>
+
+
+
         </div>
 
         <div class="logout">

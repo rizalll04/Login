@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Tambah User</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+          rel="stylesheet">
+
+    <link rel="stylesheet" th:href="@{/css/users.css}">
+</head>
+
+<body>
+
+<div class="wrapper">
+
+    <!-- SIDEBAR -->
+
+    <div class="sidebar">
+
+        <div class="logo">
+            <img th:src="@{/images/logo.png}" alt="Logo">
+            <span>LATIHAN</span>
+        </div>
+
+        <div class="menu">
+
+            <a th:href="@{/home}">
+                Dashboard
+            </a>
+
+            <a th:href="@{/employee}">
+                Data Karyawan
+            </a>
+
+            <a th:href="@{/task}">
+                Daily Task
+            </a>
+
+            <a th:href="@{/users}" class="active">
+                Kelola User
+            </a>
+
+        </div>
+
+        <div class="logout">
+
+            <a th:href="@{/logout}">
+                Logout
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- MAIN -->
+
+    <div class="main">
+
+        <!-- HEADER -->
+
+        <div class="header">
+
+            <div>
+                <h2>Tambah User</h2>
+
+                <p>
+                    Tambahkan user baru dan tentukan hak aksesnya.
+                </p>
+            </div>
+
+            <div class="user-info">
+
+                Login sebagai:
+                <strong th:text="${session.username}">
+                    Admin
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <!-- FORM -->
+
+        <div class="form-panel">
+
+            <!-- ERROR -->
+
+            <div class="error"
+                 th:if="${error}"
+                 th:text="${error}">
+            </div>
+
+
+            <form th:action="@{/users/save}"
+                  th:object="${user}"
+                  method="post">
+
+
+                <!-- FULLNAME -->
+
+                <div class="form-group">
+
+                    <label for="fullname">
+                        Nama Lengkap
+                    </label>
+
+                    <input type="text"
+                           id="fullname"
+                           th:field="*{fullname}"
+                           placeholder="Masukkan nama lengkap"
+                           required>
+
+                </div>
+
+
+                <!-- USERNAME -->
+
+                <div class="form-group">
+
+                    <label for="username">
+                        Username
+                    </label>
+
+                    <input type="text"
+                           id="username"
+                           th:field="*{username}"
+                           placeholder="Masukkan username"
+                           required>
+
+                </div>
+
+
+                <!-- PASSWORD -->
+
+                <div class="form-group">
+
+                    <label for="password">
+                        Password
+                    </label>
+
+                    <input type="password"
+                           id="password"
+                           th:field="*{password}"
+                           placeholder="Masukkan password"
+                           required>
+
+                </div>
+
+
+                <!-- EMAIL -->
+
+                <div class="form-group">
+
+                    <label for="email">
+                        Email
+                    </label>
+
+                    <input type="email"
+                           id="email"
+                           th:field="*{email}"
+                           placeholder="Masukkan email">
+
+                </div>
+
+
+                <!-- ROLE -->
+
+                <div class="form-group">
+
+                    <label for="role">
+                        Hak Akses
+                    </label>
+
+                    <select id="role"
+                            th:field="*{role}"
+                            required>
+
+                        <option value="">
+                            -- Pilih Hak Akses --
+                        </option>
+
+                        <option value="ADMIN">
+                            ADMIN
+                        </option>
+
+                        <option value="USER">
+                            USER
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- BUTTON -->
+
+                <div class="form-actions">
+
+                    <a th:href="@{/users}"
+                       class="btn-cancel">
+                        Batal
+                    </a>
+
+                    <button type="submit"
+                            class="btn-save">
+                        Simpan User
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>
