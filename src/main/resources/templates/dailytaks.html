@@ -1,150 +1,548 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Daily Task</title>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" th:href="@{/css/dailytaks.css}">
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title th:text="#{page.task.title}">
+        Daily Task
+    </title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+          rel="stylesheet">
+
+    <link rel="stylesheet"
+          th:href="@{/css/dailytaks.css}">
+
 </head>
+
+<script>
+function changeLanguage(lang) {
+
+    const url = new URL(window.location.href);
+
+    url.searchParams.set("lang", lang);
+
+    window.location.href = url.toString();
+}
+</script>
 <body>
+
 <div class="wrapper">
-    <div class="sidebar">
-        <div class="logo">
-    <img th:src="@{/images/logo.png}" alt="Logo">
-    <span>LATIHAN</span>
-</div>
-        <div class="menu">
-            <a th:href="@{/home}"> Dashboard</a>
-            <a th:href="@{/employee}"> Data Karyawan</a>
-            <a th:href="@{/task}" class="active"> Daily Task</a>
-        </div>
-        <div class="logout">
-            <a th:href="@{/logout}">Logout</a>
-        </div>
+
+
+    <!-- =========================
+         SIDEBAR
+    ========================== -->
+
+        <div class="sidebar">
+
+    <!-- LOGO -->
+    <div class="logo">
+        <img th:src="@{/images/logo.png}" alt="Logo">
+        <span>LATIHAN</span>
     </div>
+
+    <!-- BAHASA -->
+    <div class="language-selector">
+
+       <label for="language"
+       th:text="#{language.select}">
+    Pilih Bahasa
+</label>
+
+        <select id="language"
+                onchange="changeLanguage(this.value)">
+
+            <option value="id"
+                    th:selected="${#locale.language == 'id'}">
+                Indonesia
+            </option>
+
+            <option value="en"
+                    th:selected="${#locale.language == 'en'}">
+                English
+            </option>
+
+            <option value="zh"
+                    th:selected="${#locale.language == 'zh'}">
+                中文
+            </option>
+
+        </select>
+
+    </div>
+
+    <!-- MENU -->
+    <div class="menu">
+
+        <a th:href="@{/home}"
+           th:text="#{menu.dashboard}">
+            Dashboard
+        </a>
+
+        <a th:href="@{/employee}"
+           th:text="#{menu.employee}">
+            Data Karyawan
+        </a>
+
+        <a th:href="@{/task}"
+           th:text="#{menu.task}">
+            Daily Task
+        </a>
+
+        <a th:if="${session.role == 'ADMIN'}"
+           th:href="@{/users}"
+           th:text="#{menu.users}">
+            Kelola User
+        </a>
+
+    </div>
+
+    <!-- LOGOUT -->
+    <div class="logout">
+        <a th:href="@{/logout}"
+           th:text="#{menu.logout}">
+            Logout
+        </a>
+    </div>
+
+</div>
+
+
+    <!-- =========================
+         MAIN
+    ========================== -->
+
     <div class="main">
+
+
+        <!-- =========================
+             HEADER
+        ========================== -->
+
         <div class="header">
-            <h2>Daily Task IT</h2>
-            <p>Informasi task harian karyawan.</p>
+
+            <h2 th:text="#{task.header.title}">
+                Daily Task IT
+            </h2>
+
+
+            <p th:text="#{task.header.description}">
+                Informasi task harian karyawan.
+            </p>
+
         </div>
-        <form class="filter-form" method="get" th:action="@{/task}">
-            <input type="text" name="nik" placeholder="Filter NIK" th:value="${nik}">
+
+
+        <!-- =========================
+             FILTER
+        ========================== -->
+
+        <form class="filter-form"
+              method="get"
+              th:action="@{/task}">
+
+
+            <!-- FILTER NIK -->
+
+            <input type="text"
+                   name="nik"
+                   th:value="${nik}"
+                   th:placeholder="#{task.filter.nik}">
+
+
+            <!-- FILTER FACTORY -->
+
             <select name="factory">
-                <option value="">Semua Factory</option>
+
+                <option value=""
+                        th:text="#{task.filter.all.factory}">
+
+                    Semua Factory
+
+                </option>
+
+
                 <option th:each="factoryOption : ${factoryOptions}"
                         th:value="${factoryOption}"
                         th:text="${factoryOption}"
                         th:selected="${factoryOption == factory}">
+
                     Factory
+
                 </option>
+
             </select>
+
+
+            <!-- FILTER STATUS -->
+
             <select name="status">
-                <option value="">Semua Status</option>
+
+                <option value=""
+                        th:text="#{task.filter.all.status}">
+
+                    Semua Status
+
+                </option>
+
+
                 <option th:each="statusOption : ${statusOptions}"
                         th:value="${statusOption}"
                         th:text="${statusOption}"
                         th:selected="${statusOption == status}">
+
                     Status
+
                 </option>
+
             </select>
+
+
+            <!-- JUMLAH DATA -->
+
             <select name="size">
-                <option value="10" th:selected="${pageSize == 10}">10 / halaman</option>
-                <option value="25" th:selected="${pageSize == 25}">25 / halaman</option>
-                <option value="50" th:selected="${pageSize == 50}">50 / halaman</option>
-                <option value="100" th:selected="${pageSize == 100}">100 / halaman</option>
+
+                <option value="10"
+                        th:selected="${pageSize == 10}"
+                        th:text="#{task.pagination.10}">
+
+                    10 / halaman
+
+                </option>
+
+
+                <option value="25"
+                        th:selected="${pageSize == 25}"
+                        th:text="#{task.pagination.25}">
+
+                    25 / halaman
+
+                </option>
+
+
+                <option value="50"
+                        th:selected="${pageSize == 50}"
+                        th:text="#{task.pagination.50}">
+
+                    50 / halaman
+
+                </option>
+
+
+                <option value="100"
+                        th:selected="${pageSize == 100}"
+                        th:text="#{task.pagination.100}">
+
+                    100 / halaman
+
+                </option>
+
             </select>
-            <input type="hidden" name="page" value="0">
-            <button type="submit">Terapkan Filter</button>
-            <a th:href="@{/task}">Reset</a>
+
+
+            <!-- PAGE -->
+
+            <input type="hidden"
+                   name="page"
+                   value="0">
+
+
+            <!-- BUTTON FILTER -->
+
+            <button type="submit"
+                    th:text="#{task.filter.apply}">
+
+                Terapkan Filter
+
+            </button>
+
+
+            <!-- RESET -->
+
+            <a th:href="@{/task}"
+               th:text="#{task.filter.reset}">
+
+                Reset
+
+            </a>
+
         </form>
+
+
+        <!-- =========================
+             PANEL
+        ========================== -->
+
         <div class="panel">
-            <div th:if="${hasFilter and #lists.isEmpty(tasks)}" class="empty">Data task tidak ditemukan untuk filter yang dipilih.</div>
+
+
+            <!-- DATA KOSONG -->
+
+            <div th:if="${hasFilter and #lists.isEmpty(tasks)}"
+                 class="empty"
+                 th:text="#{task.empty.filter}">
+
+                Data task tidak ditemukan untuk filter yang dipilih.
+
+            </div>
+
+
+            <!-- =========================
+                 TABLE
+            ========================== -->
+
             <table th:if="${!#lists.isEmpty(tasks)}">
+
+
                 <thead>
-                    <tr>
-                        <th>NIK</th>
-                        <th>Factory</th>
-                        <th>Gedung</th>
-                        <th>Masalah</th>
-                        <th>Solusi</th>
-                        <th>Status</th>
-                    </tr>
+
+                <tr>
+
+                    <th th:text="#{task.table.nik}">
+                        NIK
+                    </th>
+
+
+                    <th th:text="#{task.table.factory}">
+                        Factory
+                    </th>
+
+
+                    <th th:text="#{task.table.building}">
+                        Gedung
+                    </th>
+
+
+                    <th th:text="#{task.table.problem}">
+                        Masalah
+                    </th>
+
+
+                    <th th:text="#{task.table.solution}">
+                        Solusi
+                    </th>
+
+
+                    <th th:text="#{task.table.status}">
+                        Status
+                    </th>
+
+                </tr>
+
                 </thead>
+
+
                 <tbody>
-                    <tr th:each="task : ${tasks}">
-                        <td th:text="${task.empnik}">001</td>
-                        <td th:text="${task.tskfct}">F01</td>
-                        <td th:text="${task.tskgdg}">G01</td>
-                        <td th:text="${task.tskmsl}">Masalah</td>
-                        <td th:text="${task.tsksls}">Solusi</td>
-                        <td>
-    <span class="status"
-          th:text="${task.tsksts}"
-          th:classappend="
-            ${task.tsksts == 'SELESAI'} ? ' status-selesai' :
-            (${task.tsksts == 'PROGRES'} ? ' status-progres' :
-            (${task.tsksts == 'PENGAJUAN'} ? ' status-pengajuan' :
-            (${task.tsksts == 'PERBAIKAN'} ? ' status-perbaikan' : '')))">
-    </span>
-</td>
-                    </tr>
+
+                <tr th:each="task : ${tasks}">
+
+
+                    <!-- NIK -->
+
+                    <td th:text="${task.empnik}">
+                        001
+                    </td>
+
+
+                    <!-- FACTORY -->
+
+                    <td th:text="${task.tskfct}">
+                        F01
+                    </td>
+
+
+                    <!-- GEDUNG -->
+
+                    <td th:text="${task.tskgdg}">
+                        G01
+                    </td>
+
+
+                    <!-- MASALAH -->
+
+                    <td th:text="${task.tskmsl}">
+                        Masalah
+                    </td>
+
+
+                    <!-- SOLUSI -->
+
+                    <td th:text="${task.tsksls}">
+                        Solusi
+                    </td>
+
+
+                    <!-- STATUS -->
+
+                    <td>
+
+                        <span class="status"
+
+                              th:text="${task.tsksts}"
+
+                              th:classappend="
+                                ${task.tsksts == 'SELESAI'} ? ' status-selesai' :
+                                (${task.tsksts == 'PROGRES'} ? ' status-progres' :
+                                (${task.tsksts == 'PENGAJUAN'} ? ' status-pengajuan' :
+                                (${task.tsksts == 'PERBAIKAN'} ? ' status-perbaikan' : '')))">
+
+                        </span>
+
+                    </td>
+
+                </tr>
+
                 </tbody>
+
             </table>
-          <div class="pagination" th:if="${totalItems > 0}">
 
-    <!-- INFO DATA -->
-    <div class="pagination-info">
-        Menampilkan
-        <strong th:text="${#lists.size(tasks)}">0</strong>
-        dari
-        <strong th:text="${totalItems}">0</strong>
-        data
-    </div>
 
-    <!-- NAVIGASI -->
-    <div class="pagination-nav">
+            <!-- =========================
+                 PAGINATION
+            ========================== -->
 
-        <!-- SEBELUMNYA -->
-        <a class="page-btn"
-           th:if="${currentPage > 0}"
-           th:href="@{/task(
-               nik=${nik},
-               factory=${factory},
-               status=${status},
-               size=${pageSize},
-               page=${currentPage - 1}
-           )}">
-            ← Sebelumnya
-        </a>
+            <div class="pagination"
+                 th:if="${totalItems > 0}">
 
-        <!-- NOMOR HALAMAN -->
-        <span class="page-number">
-            Halaman
-            <strong th:text="${currentPage + 1}">1</strong>
-            dari
-            <strong th:text="${totalPages}">1</strong>
-        </span>
 
-        <!-- BERIKUTNYA -->
-        <a class="page-btn"
-           th:if="${currentPage + 1 < totalPages}"
-           th:href="@{/task(
-               nik=${nik},
-               factory=${factory},
-               status=${status},
-               size=${pageSize},
-               page=${currentPage + 1}
-           )}">
-            Berikutnya →
-        </a>
+                <!-- INFO DATA -->
 
-    </div>
+                <div class="pagination-info">
 
-</div>
+
+                    <span th:text="#{task.pagination.showing}">
+                        Menampilkan
+                    </span>
+
+
+                    <strong th:text="${#lists.size(tasks)}">
+                        0
+                    </strong>
+
+
+                    <span th:text="#{task.pagination.of}">
+                        dari
+                    </span>
+
+
+                    <strong th:text="${totalItems}">
+                        0
+                    </strong>
+
+
+                    <span th:text="#{task.pagination.data}">
+                        data
+                    </span>
+
+
+                </div>
+
+
+                <!-- NAVIGASI -->
+
+                <div class="pagination-nav">
+
+
+                    <!-- SEBELUMNYA -->
+
+                    <a class="page-btn"
+
+                       th:if="${currentPage > 0}"
+
+                       th:href="@{/task(
+                           nik=${nik},
+                           factory=${factory},
+                           status=${status},
+                           size=${pageSize},
+                           page=${currentPage - 1}
+                       )}"
+
+                       th:text="#{task.pagination.previous}">
+
+                        ← Sebelumnya
+
+                    </a>
+
+
+                    <!-- HALAMAN -->
+
+                    <span class="page-number">
+
+
+                        <span th:text="#{task.pagination.page}">
+                            Halaman
+                        </span>
+
+
+                        <strong th:text="${currentPage + 1}">
+                            1
+                        </strong>
+
+
+                        <span th:text="#{task.pagination.of}">
+                            dari
+                        </span>
+
+
+                        <strong th:text="${totalPages}">
+                            1
+                        </strong>
+
+
+                    </span>
+
+
+                    <!-- BERIKUTNYA -->
+
+                    <a class="page-btn"
+
+                       th:if="${currentPage + 1 < totalPages}"
+
+                       th:href="@{/task(
+                           nik=${nik},
+                           factory=${factory},
+                           status=${status},
+                           size=${pageSize},
+                           page=${currentPage + 1}
+                       )}"
+
+                       th:text="#{task.pagination.next}">
+
+                        Berikutnya →
+
+                    </a>
+
+                </div>
+
+            </div>
+
+
         </div>
-        <a class="back" th:href="@{/home}">Kembali ke Dashboard</a>
+
+
+        <!-- =========================
+             BACK
+        ========================== -->
+
+        <a class="back"
+           th:href="@{/home}"
+           th:text="#{task.back}">
+
+            Kembali ke Dashboard
+
+        </a>
+
+
     </div>
+
 </div>
+
 </body>
+
 </html>

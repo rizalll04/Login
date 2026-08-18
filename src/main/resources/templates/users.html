@@ -2,85 +2,152 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Kelola User</title>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title th:text="#{page.users.title}">
+        Kelola User
+    </title>
 
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
           rel="stylesheet">
 
-    <link rel="stylesheet" th:href="@{/css/users.css}">
+    <link rel="stylesheet"
+          th:href="@{/css/users.css}">
+
 </head>
+<script>
+function changeLanguage(lang) {
+
+    const url = new URL(window.location.href);
+
+    url.searchParams.set("lang", lang);
+
+    window.location.href = url.toString();
+}
+</script>
 
 <body>
 
 <div class="wrapper">
 
-    <!-- SIDEBAR -->
 
-    <div class="sidebar">
+    <!-- =========================
+         SIDEBAR
+    ========================== -->
 
-        <div class="logo">
+       <div class="sidebar">
 
-            <img th:src="@{/images/logo.png}" alt="Logo">
+    <!-- LOGO -->
+    <div class="logo">
+        <img th:src="@{/images/logo.png}" alt="Logo">
+        <span>LATIHAN</span>
+    </div>
 
-            <span>LATIHAN</span>
+    <!-- BAHASA -->
+    <div class="language-selector">
 
-        </div>
+       <label for="language"
+       th:text="#{language.select}">
+    Pilih Bahasa
+</label>
 
+        <select id="language"
+                onchange="changeLanguage(this.value)">
 
-        <div class="menu">
+            <option value="id"
+                    th:selected="${#locale.language == 'id'}">
+                Indonesia
+            </option>
 
-            <a th:href="@{/home}">
-                Dashboard
-            </a>
+            <option value="en"
+                    th:selected="${#locale.language == 'en'}">
+                English
+            </option>
 
-            <a th:href="@{/employee}">
-                Data Karyawan
-            </a>
+            <option value="zh"
+                    th:selected="${#locale.language == 'zh'}">
+                中文
+            </option>
 
-            <a th:href="@{/task}">
-                Daily Task
-            </a>
-
-            <a th:href="@{/users}" class="active">
-                Kelola User
-            </a>
-
-        </div>
-
-
-        <div class="logout">
-
-            <a th:href="@{/logout}">
-                Logout
-            </a>
-
-        </div>
+        </select>
 
     </div>
 
+    <!-- MENU -->
+    <div class="menu">
 
-    <!-- MAIN -->
+        <a th:href="@{/home}"
+           th:text="#{menu.dashboard}">
+            Dashboard
+        </a>
+
+        <a th:href="@{/employee}"
+           th:text="#{menu.employee}">
+            Data Karyawan
+        </a>
+
+        <a th:href="@{/task}"
+           th:text="#{menu.task}">
+            Daily Task
+        </a>
+
+        <a th:if="${session.role == 'ADMIN'}"
+           th:href="@{/users}"
+           th:text="#{menu.users}">
+            Kelola User
+        </a>
+
+    </div>
+
+    <!-- LOGOUT -->
+    <div class="logout">
+        <a th:href="@{/logout}"
+           th:text="#{menu.logout}">
+            Logout
+        </a>
+    </div>
+
+</div>
+
+
+    <!-- =========================
+         MAIN
+    ========================== -->
 
     <div class="main">
 
+
+        <!-- HEADER -->
+
         <div class="header">
+
 
             <div>
 
-                <h2>Kelola User</h2>
+                <h2 th:text="#{users.header.title}">
+                    Kelola User
+                </h2>
 
-                <p>
+
+                <p th:text="#{users.header.description}">
                     Kelola akun pengguna dan hak akses aplikasi.
                 </p>
 
             </div>
 
+
+            <!-- USER LOGIN -->
+
             <div class="user-info">
 
-                Login sebagai:
+                <span th:text="#{users.login.as}">
+                    Login sebagai:
+                </span>
+
                 <strong th:text="${username}">
                     admin
                 </strong>
@@ -90,94 +157,205 @@
         </div>
 
 
-        <!-- PANEL -->
+        <!-- =========================
+             PANEL USER
+        ========================== -->
 
         <div class="panel">
 
+
+            <!-- PANEL HEADER -->
+
             <div class="panel-header">
+
 
                 <div>
 
-                    <h3>Daftar User</h3>
+                    <h3 th:text="#{users.list.title}">
+                        Daftar User
+                    </h3>
 
-                    <p>
+
+                    <p th:text="#{users.list.description}">
                         Daftar pengguna yang memiliki akses ke sistem.
                     </p>
 
                 </div>
 
 
-                <a th:href="@{/users/new}" class="btn-add">
+                <!-- TAMBAH USER -->
+
+                <a th:href="@{/users/new}"
+                   class="btn-add"
+                   th:text="#{users.button.add}">
+
                     + Tambah User
+
                 </a>
 
             </div>
 
 
-            <!-- TABLE -->
+            <!-- =========================
+                 TABLE
+            ========================== -->
 
             <div class="table-container">
 
                 <table>
 
+
+                    <!-- TABLE HEADER -->
+
                     <thead>
 
                     <tr>
 
-                        <th>No</th>
+                        <th th:text="#{users.table.id}">
+                            ID
+                        </th>
 
-                        <th>Username</th>
 
-                        <th>Role</th>
+                        <th th:text="#{users.table.fullname}">
+                            Nama Lengkap
+                        </th>
 
-                        <th>Aksi</th>
+
+                        <th th:text="#{users.table.username}">
+                            Username
+                        </th>
+
+
+                        <th th:text="#{users.table.email}">
+                            Email
+                        </th>
+
+
+                        <th th:text="#{users.table.role}">
+                            Role
+                        </th>
+
+
+                        <th th:text="#{users.table.created}">
+                            Dibuat
+                        </th>
+
+
+                        <th th:text="#{users.table.action}">
+                            Aksi
+                        </th>
 
                     </tr>
 
                     </thead>
 
 
+                    <!-- TABLE BODY -->
+
                     <tbody>
 
-                    <tr th:each="user, stat : ${users}">
 
-                        <td th:text="${stat.count}">
+                    <!-- DATA USER -->
+
+                    <tr th:each="user : ${users}">
+
+
+                        <!-- ID -->
+
+                        <td th:text="${user.id}">
                             1
                         </td>
 
+
+                        <!-- NAMA LENGKAP -->
+
                         <td>
 
-                            <strong th:text="${user.username}">
-                                admin
+                            <strong th:text="${user.fullname}">
+                                Nama Lengkap
                             </strong>
 
                         </td>
 
 
+                        <!-- USERNAME -->
+
+                        <td th:text="${user.username}">
+                            admin
+                        </td>
+
+
+                        <!-- EMAIL -->
+
+                        <td th:text="${user.email}">
+                            admin@email.com
+                        </td>
+
+
+                        <!-- ROLE -->
+
                         <td>
 
                             <span class="role-badge"
-                                  th:classappend="${user.role == 'ADMIN'} ? ' role-admin' : ' role-user'"
+
+                                  th:classappend="${user.role == 'ADMIN'}
+                                      ? ' role-admin'
+                                      : ' role-user'"
+
                                   th:text="${user.role}">
-                                ADMIN
+
+                                USER
+
                             </span>
 
                         </td>
 
 
+                        <!-- CREATED -->
+
+                        <td th:text="${user.createdAt != null
+                            ? #dates.format(user.createdAt, 'dd-MM-yyyy HH:mm')
+                            : '-'}">
+
+                            14-08-2026
+
+                        </td>
+
+
+                        <!-- ACTION -->
+
                         <td>
 
                             <div class="actions">
 
-                                <a href="#"
-                                   class="btn-edit">
+
+                                <!-- EDIT -->
+
+                                <a th:href="@{/users/edit/{id}(id=${user.id})}"
+                                   class="btn-edit"
+                                   th:text="#{users.button.edit}">
+
                                     Edit
+
                                 </a>
 
-                                <a href="#"
+
+                                <!-- DELETE -->
+
+                                <a th:if="${user.username != session.username}"
+
+                                   th:href="@{/users/delete/{id}(id=${user.id})}"
+
                                    class="btn-delete"
-                                   th:if="${user.username != username}">
+
+                                   onclick="return confirm(this.dataset.confirm);"
+
+                                   th:attr="data-confirm=#{users.delete.confirm}"
+
+                                   th:text="#{users.button.delete}">
+
                                     Hapus
+
                                 </a>
 
                             </div>
@@ -187,17 +365,22 @@
                     </tr>
 
 
-                    <!-- KOSONG -->
+                    <!-- =========================
+                         DATA KOSONG
+                    ========================== -->
 
                     <tr th:if="${#lists.isEmpty(users)}">
 
-                        <td colspan="4" class="empty">
+                        <td colspan="7"
+                            class="empty"
+                            th:text="#{users.empty}">
 
                             Belum ada user.
 
                         </td>
 
                     </tr>
+
 
                     </tbody>
 
@@ -208,8 +391,14 @@
         </div>
 
 
-        <a class="back" th:href="@{/home}">
+        <!-- BACK -->
+
+        <a class="back"
+           th:href="@{/home}"
+           th:text="#{users.back}">
+
             ← Kembali ke Dashboard
+
         </a>
 
     </div>

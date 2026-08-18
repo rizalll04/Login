@@ -2,80 +2,151 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Tambah User</title>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title th:text="#{users.form.title}">
+        Tambah User
+    </title>
 
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
           rel="stylesheet">
 
-    <link rel="stylesheet" th:href="@{/css/users.css}">
+    <link rel="stylesheet"
+          th:href="@{/css/users.css}">
+
 </head>
+<script>
+function changeLanguage(lang) {
+
+    const url = new URL(window.location.href);
+
+    url.searchParams.set("lang", lang);
+
+    window.location.href = url.toString();
+}
+</script>
 
 <body>
 
 <div class="wrapper">
 
-    <!-- SIDEBAR -->
 
-    <div class="sidebar">
+    <!-- =========================
+         SIDEBAR
+    ========================== -->
 
-        <div class="logo">
-            <img th:src="@{/images/logo.png}" alt="Logo">
-            <span>LATIHAN</span>
-        </div>
+       <div class="sidebar">
 
-        <div class="menu">
+    <!-- LOGO -->
+    <div class="logo">
+        <img th:src="@{/images/logo.png}" alt="Logo">
+        <span>LATIHAN</span>
+    </div>
 
-            <a th:href="@{/home}">
-                Dashboard
-            </a>
+    <!-- BAHASA -->
+    <div class="language-selector">
 
-            <a th:href="@{/employee}">
-                Data Karyawan
-            </a>
+       <label for="language"
+       th:text="#{language.select}">
+    Pilih Bahasa
+</label>
 
-            <a th:href="@{/task}">
-                Daily Task
-            </a>
+        <select id="language"
+                onchange="changeLanguage(this.value)">
 
-            <a th:href="@{/users}" class="active">
-                Kelola User
-            </a>
+            <option value="id"
+                    th:selected="${#locale.language == 'id'}">
+                Indonesia
+            </option>
 
-        </div>
+            <option value="en"
+                    th:selected="${#locale.language == 'en'}">
+                English
+            </option>
 
-        <div class="logout">
+            <option value="zh"
+                    th:selected="${#locale.language == 'zh'}">
+                中文
+            </option>
 
-            <a th:href="@{/logout}">
-                Logout
-            </a>
-
-        </div>
+        </select>
 
     </div>
 
+    <!-- MENU -->
+    <div class="menu">
 
-    <!-- MAIN -->
+        <a th:href="@{/home}"
+           th:text="#{menu.dashboard}">
+            Dashboard
+        </a>
+
+        <a th:href="@{/employee}"
+           th:text="#{menu.employee}">
+            Data Karyawan
+        </a>
+
+        <a th:href="@{/task}"
+           th:text="#{menu.task}">
+            Daily Task
+        </a>
+
+        <a th:if="${session.role == 'ADMIN'}"
+           th:href="@{/users}"
+           th:text="#{menu.users}">
+            Kelola User
+        </a>
+
+    </div>
+
+    <!-- LOGOUT -->
+    <div class="logout">
+        <a th:href="@{/logout}"
+           th:text="#{menu.logout}">
+            Logout
+        </a>
+    </div>
+
+</div>
+
+    <!-- =========================
+         MAIN
+    ========================== -->
 
     <div class="main">
+
 
         <!-- HEADER -->
 
         <div class="header">
 
-            <div>
-                <h2>Tambah User</h2>
 
-                <p>
+            <div>
+
+                <h2 th:text="#{users.form.title}">
+                    Tambah User
+                </h2>
+
+
+                <p th:text="#{users.form.description}">
                     Tambahkan user baru dan tentukan hak aksesnya.
                 </p>
+
             </div>
+
+
+            <!-- USER LOGIN -->
 
             <div class="user-info">
 
-                Login sebagai:
+                <span th:text="#{users.login.as}">
+                    Login sebagai:
+                </span>
+
                 <strong th:text="${session.username}">
                     Admin
                 </strong>
@@ -85,9 +156,12 @@
         </div>
 
 
-        <!-- FORM -->
+        <!-- =========================
+             FORM
+        ========================== -->
 
         <div class="form-panel">
+
 
             <!-- ERROR -->
 
@@ -97,97 +171,148 @@
             </div>
 
 
-            <form th:action="@{/users/save}"
+            <form th:action="${user.id == null}
+                    ? @{/users/save}
+                    : @{/users/update}"
+
                   th:object="${user}"
+
                   method="post">
 
 
-                <!-- FULLNAME -->
+                <!-- ID -->
+
+                <input type="hidden"
+                       th:field="*{id}">
+
+
+                <!-- =========================
+                     FULL NAME
+                ========================== -->
 
                 <div class="form-group">
 
-                    <label for="fullname">
+                    <label for="fullname"
+                           th:text="#{users.form.fullname}">
                         Nama Lengkap
                     </label>
 
+
                     <input type="text"
+
                            id="fullname"
+
                            th:field="*{fullname}"
-                           placeholder="Masukkan nama lengkap"
+
+                           th:placeholder="#{users.form.fullname.placeholder}"
+
                            required>
 
                 </div>
 
 
-                <!-- USERNAME -->
+                <!-- =========================
+                     USERNAME
+                ========================== -->
 
                 <div class="form-group">
 
-                    <label for="username">
+                    <label for="username"
+                           th:text="#{users.form.username}">
                         Username
                     </label>
 
+
                     <input type="text"
+
                            id="username"
+
                            th:field="*{username}"
-                           placeholder="Masukkan username"
+
+                           th:placeholder="#{users.form.username.placeholder}"
+
                            required>
 
                 </div>
 
 
-                <!-- PASSWORD -->
+                <!-- =========================
+                     PASSWORD
+                ========================== -->
 
                 <div class="form-group">
 
-                    <label for="password">
+                    <label for="password"
+                           th:text="#{users.form.password}">
                         Password
                     </label>
 
+
                     <input type="password"
+
                            id="password"
+
                            th:field="*{password}"
-                           placeholder="Masukkan password"
+
+                           th:placeholder="#{users.form.password.placeholder}"
+
                            required>
 
                 </div>
 
 
-                <!-- EMAIL -->
+                <!-- =========================
+                     EMAIL
+                ========================== -->
 
                 <div class="form-group">
 
-                    <label for="email">
+                    <label for="email"
+                           th:text="#{users.form.email}">
                         Email
                     </label>
 
+
                     <input type="email"
+
                            id="email"
+
                            th:field="*{email}"
-                           placeholder="Masukkan email">
+
+                           th:placeholder="#{users.form.email.placeholder}">
 
                 </div>
 
 
-                <!-- ROLE -->
+                <!-- =========================
+                     ROLE
+                ========================== -->
 
                 <div class="form-group">
 
-                    <label for="role">
+                    <label for="role"
+                           th:text="#{users.form.role}">
                         Hak Akses
                     </label>
 
+
                     <select id="role"
+
                             th:field="*{role}"
+
                             required>
 
-                        <option value="">
+
+                        <option value=""
+                                th:text="#{users.form.role.choose}">
                             -- Pilih Hak Akses --
                         </option>
+
 
                         <option value="ADMIN">
                             ADMIN
                         </option>
+
 
                         <option value="USER">
                             USER
@@ -198,21 +323,40 @@
                 </div>
 
 
-                <!-- BUTTON -->
+                <!-- =========================
+                     BUTTON
+                ========================== -->
 
                 <div class="form-actions">
 
+
+                    <!-- BATAL -->
+
                     <a th:href="@{/users}"
-                       class="btn-cancel">
+
+                       class="btn-cancel"
+
+                       th:text="#{users.form.cancel}">
+
                         Batal
+
                     </a>
 
+
+                    <!-- SIMPAN -->
+
                     <button type="submit"
-                            class="btn-save">
+
+                            class="btn-save"
+
+                            th:text="#{users.form.save}">
+
                         Simpan User
+
                     </button>
 
                 </div>
+
 
             </form>
 
@@ -223,4 +367,5 @@
 </div>
 
 </body>
+
 </html>

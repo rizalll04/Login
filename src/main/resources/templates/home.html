@@ -1,75 +1,136 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dashboard</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" th:href="@{/css/home.css}">
+    <title th:text="#{page.home.title}">Dashboard</title>
 
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+          rel="stylesheet">
+
+    <link rel="stylesheet" th:href="@{/css/home.css}">
 </head>
+<script>
+function changeLanguage(lang) {
 
+    const url = new URL(window.location.href);
+
+    url.searchParams.set("lang", lang);
+
+    window.location.href = url.toString();
+}
+</script>
 <body>
 
 <div class="wrapper">
 
-    <!-- Sidebar -->
+    <!-- =========================
+         SIDEBAR
+    ========================== -->
 
     <div class="sidebar">
 
-        <div class="logo">
-    <img th:src="@{/images/logo.png}" alt="Logo">
-    <span>LATIHAN</span>
-</div>
+    <!-- LOGO -->
+    <div class="logo">
+        <img th:src="@{/images/logo.png}" alt="Logo">
+        <span>LATIHAN</span>
+    </div>
 
-        <div class="menu">
+    <!-- BAHASA -->
+    <div class="language-selector">
 
-            <a th:href="@{/home}" class="active">
-    Dashboard
-</a>
+       <label for="language"
+       th:text="#{language.select}">
+    Pilih Bahasa
+</label>
 
-<a th:href="@{/employee}">
-    Data Karyawan
-</a>
+        <select id="language"
+                onchange="changeLanguage(this.value)">
 
-<a th:href="@{/task}">
-    Daily Task
-</a>
+            <option value="id"
+                    th:selected="${#locale.language == 'id'}">
+                Indonesia
+            </option>
 
-<a th:if="${session.role == 'ADMIN'}"
-   th:href="@{/users}">
-    Kelola User
-</a>
+            <option value="en"
+                    th:selected="${#locale.language == 'en'}">
+                English
+            </option>
 
+            <option value="zh"
+                    th:selected="${#locale.language == 'zh'}">
+                中文
+            </option>
 
-
-        </div>
-
-        <div class="logout">
-
-            <a th:href="@{/logout}">
-                Logout
-            </a>
-
-        </div>
+        </select>
 
     </div>
 
+    <!-- MENU -->
+    <div class="menu">
+
+        <a th:href="@{/home}"
+           th:text="#{menu.dashboard}">
+            Dashboard
+        </a>
+
+        <a th:href="@{/employee}"
+           th:text="#{menu.employee}">
+            Data Karyawan
+        </a>
+
+        <a th:href="@{/task}"
+           th:text="#{menu.task}">
+            Daily Task
+        </a>
+
+        <a th:if="${session.role == 'ADMIN'}"
+           th:href="@{/users}"
+           th:text="#{menu.users}">
+            Kelola User
+        </a>
+
+    </div>
+
+    <!-- LOGOUT -->
+    <div class="logout">
+        <a th:href="@{/logout}"
+           th:text="#{menu.logout}">
+            Logout
+        </a>
+    </div>
+
+</div>
 
 
-    <!-- Content -->
+
+    <!-- =========================
+         CONTENT
+    ========================== -->
 
     <div class="main">
+
+
+        <!-- HEADER -->
 
         <div class="header">
 
             <h2>
-                Selamat Datang,
-                <span th:text="${username}">User</span>
+
+                <span th:text="#{home.welcome}">
+                    Selamat Datang
+                </span>,
+
+                <span th:text="${username}">
+                    User
+                </span>
+
             </h2>
 
-            <p>
+
+            <p th:text="#{home.description}">
                 Silakan pilih menu di sidebar untuk melihat data karyawan
                 atau daily task.
             </p>
@@ -77,36 +138,55 @@
         </div>
 
 
+        <!-- =========================
+             CARDS
+        ========================== -->
 
         <div class="cards">
 
+
+            <!-- DATA KARYAWAN -->
+
             <div class="card">
 
-                <h3> Data Karyawan</h3>
+                <h3 th:text="#{home.employee.title}">
+                    Data Karyawan
+                </h3>
 
-                <p>
+
+                <p th:text="#{home.employee.description}">
                     Menampilkan data seluruh karyawan yang diambil
                     dari Database ADM Server.
                 </p>
 
-                <a th:href="@{/employee}" class="button">
+
+                <a th:href="@{/employee}"
+                   class="button"
+                   th:text="#{button.view}">
                     Lihat Data
                 </a>
 
             </div>
 
 
+            <!-- DAILY TASK -->
 
             <div class="card">
 
-                <h3> Daily Task</h3>
+                <h3 th:text="#{home.task.title}">
+                    Daily Task
+                </h3>
 
-                <p>
+
+                <p th:text="#{home.task.description}">
                     Menampilkan data Daily Task dari
                     Database IT Server.
                 </p>
 
-                <a th:href="@{/task}" class="button">
+
+                <a th:href="@{/task}"
+                   class="button"
+                   th:text="#{button.view}">
                     Lihat Data
                 </a>
 
@@ -119,4 +199,5 @@
 </div>
 
 </body>
+
 </html>

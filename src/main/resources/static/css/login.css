@@ -156,3 +156,25 @@ button:active {
         font-size: 20px;
     }
 }
+
+.language-selector {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.language-selector label {
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.language-selector select {
+    padding: 7px 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background: white;
+    font-family: inherit;
+    cursor: pointer;
+}
