@@ -68,31 +68,38 @@ function changeLanguage(lang) {
 
     </div>
 
-    <!-- MENU -->
+     <!-- MENU -->
     <div class="menu">
 
-        <a th:href="@{/home}"
-           th:text="#{menu.dashboard}">
-            Dashboard
-        </a>
+    <!-- DASHBOARD -->
+    <a th:if="${session.role == 'ADMIN' or session.permissionDashboard == true}"
+       th:href="@{/home}"
+       th:text="#{menu.dashboard}">
+        Dashboard
+    </a>
 
-        <a th:href="@{/employee}"
-           th:text="#{menu.employee}">
-            Data Karyawan
-        </a>
+    <!-- EMPLOYEE -->
+    <a th:if="${session.role == 'ADMIN' or session.permissionEmployee == true}"
+       th:href="@{/employee}"
+       th:text="#{menu.employee}">
+        Data Karyawan
+    </a>
 
-        <a th:href="@{/task}"
-           th:text="#{menu.task}">
-            Daily Task
-        </a>
+    <!-- TASK -->
+    <a th:if="${session.role == 'ADMIN' or session.permissionTask == true}"
+       th:href="@{/task}"
+       th:text="#{menu.task}">
+        Daily Task
+    </a>
 
-        <a th:if="${session.role == 'ADMIN'}"
-           th:href="@{/users}"
-           th:text="#{menu.users}">
-            Kelola User
-        </a>
+    <!-- USER MANAGEMENT -->
+    <a th:if="${session.role == 'ADMIN' or session.permissionUserManagement == true}"
+       th:href="@{/users}"
+       th:text="#{menu.users}">
+        Kelola User
+    </a>
 
-    </div>
+</div>
 
     <!-- LOGOUT -->
     <div class="logout">

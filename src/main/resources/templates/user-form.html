@@ -21,12 +21,7 @@
 </head>
 <script>
 function changeLanguage(lang) {
-
-    const url = new URL(window.location.href);
-
-    url.searchParams.set("lang", lang);
-
-    window.location.href = url.toString();
+    window.location.href = window.location.pathname + '?lang=' + lang;
 }
 </script>
 
@@ -77,31 +72,38 @@ function changeLanguage(lang) {
 
     </div>
 
-    <!-- MENU -->
+   <!-- MENU -->
     <div class="menu">
 
-        <a th:href="@{/home}"
-           th:text="#{menu.dashboard}">
-            Dashboard
-        </a>
+    <!-- DASHBOARD -->
+    <a th:if="${session.role == 'ADMIN' or session.permissionDashboard == true}"
+       th:href="@{/home}"
+       th:text="#{menu.dashboard}">
+        Dashboard
+    </a>
 
-        <a th:href="@{/employee}"
-           th:text="#{menu.employee}">
-            Data Karyawan
-        </a>
+    <!-- EMPLOYEE -->
+    <a th:if="${session.role == 'ADMIN' or session.permissionEmployee == true}"
+       th:href="@{/employee}"
+       th:text="#{menu.employee}">
+        Data Karyawan
+    </a>
 
-        <a th:href="@{/task}"
-           th:text="#{menu.task}">
-            Daily Task
-        </a>
+    <!-- TASK -->
+    <a th:if="${session.role == 'ADMIN' or session.permissionTask == true}"
+       th:href="@{/task}"
+       th:text="#{menu.task}">
+        Daily Task
+    </a>
 
-        <a th:if="${session.role == 'ADMIN'}"
-           th:href="@{/users}"
-           th:text="#{menu.users}">
-            Kelola User
-        </a>
+    <!-- USER MANAGEMENT -->
+    <a th:if="${session.role == 'ADMIN' or session.permissionUserManagement == true}"
+       th:href="@{/users}"
+       th:text="#{menu.users}">
+        Kelola User
+    </a>
 
-    </div>
+</div>
 
     <!-- LOGOUT -->
     <div class="logout">
@@ -321,7 +323,67 @@ function changeLanguage(lang) {
                     </select>
 
                 </div>
+                
+<!-- =========================
+     HAK AKSES FITUR
+========================== -->
 
+<div class="form-group"
+    
+
+    <label>
+        Hak Akses Fitur
+    </label>
+
+    <div class="permission-list">
+
+        <div class="permission-item"
+             th:each="permission : ${permissions}">
+
+            <div class="permission-name">
+
+                <strong th:switch="${permission.feature}">
+
+                    <span th:case="'DASHBOARD'">
+                        Dashboard
+                    </span>
+
+                    <span th:case="'EMPLOYEE'">
+                        Data Karyawan
+                    </span>
+
+                    <span th:case="'TASK'">
+                        Daily Task
+                    </span>
+
+                    <span th:case="'USER_MANAGEMENT'">
+                        Kelola User
+                    </span>
+
+                    <span th:case="*"
+                          th:text="${permission.feature}">
+                    </span>
+
+                </strong>
+
+            </div>
+
+            <label class="switch">
+
+                <input type="checkbox"
+                       name="enabledFeatures"
+                       th:value="${permission.feature}"
+                       th:checked="${permission.enabled == 1}">
+
+                <span class="slider"></span>
+
+            </label>
+
+        </div>
+
+    </div>
+
+</div>
 
                 <!-- =========================
                      BUTTON

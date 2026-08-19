@@ -80,26 +80,29 @@ function changeLanguage(lang) {
     <!-- MENU -->
     <div class="menu">
 
-        <a th:href="@{/home}"
-           th:text="#{menu.dashboard}">
-            Dashboard
-        </a>
+       <a th:if="${canDashboard}"
+   th:href="@{/home}"
+   th:text="#{menu.dashboard}">
+    Dashboard
+</a>
 
-        <a th:href="@{/employee}"
-           th:text="#{menu.employee}">
-            Data Karyawan
-        </a>
+       <a th:if="${canEmployee}"
+   th:href="@{/employee}"
+   th:text="#{menu.employee}">
+    Data Karyawan
+</a>
 
-        <a th:href="@{/task}"
-           th:text="#{menu.task}">
-            Daily Task
-        </a>
+        <a th:if="${canTask}"
+   th:href="@{/task}"
+   th:text="#{menu.task}">
+    Daily Task
+</a>
 
-        <a th:if="${session.role == 'ADMIN'}"
-           th:href="@{/users}"
-           th:text="#{menu.users}">
-            Kelola User
-        </a>
+        <a th:if="${canUserManagement}"
+   th:href="@{/users}"
+   th:text="#{menu.users}">
+    Kelola User
+</a>
 
     </div>
 

@@ -1,11 +1,12 @@
 package com.example.login.controller;
 
 import com.example.login.entity.User;
-import com.example.login.service.AuthService;
 import com.example.login.model.LoginForm;
+import com.example.login.service.AuthService;
+import com.example.login.service.PermissionService;
 
-import javax.validation.Valid;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,16 +19,34 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class LoginController {
 
     private final AuthService authService;
+    private final PermissionService permissionService;
 
-    public LoginController(AuthService authService) {
+    public LoginController(
+            AuthService authService,
+            PermissionService permissionService) {
+
         this.authService = authService;
+        this.permissionService = permissionService;
     }
+
+    // =========================
+    // LOGIN PAGE
+    // =========================
 
     @GetMapping({"/", "/login"})
     public String loginForm(Model model) {
-        model.addAttribute("loginForm", new LoginForm());
+
+        model.addAttribute(
+                "loginForm",
+                new LoginForm()
+        );
+
         return "login";
     }
+
+    // =========================
+    // LOGIN
+    // =========================
 
     @PostMapping("/login")
     public String loginSubmit(
@@ -40,34 +59,94 @@ public class LoginController {
             return "login";
         }
 
-        // LOGIN
+        // =========================
+        // CEK LOGIN
+        // =========================
+
         User user = authService.authenticate(
                 loginForm.getUsername(),
                 loginForm.getPassword()
         );
 
+        // =========================
         // LOGIN GAGAL
+        // =========================
+
         if (user == null) {
+
             model.addAttribute(
                     "loginError",
                     "Username atau password salah"
             );
+
             return "login";
         }
 
-        // LOGIN BERHASIL
-        session.setAttribute(
-                "username",
-                user.getUsername()
-        );
+        // =========================
+// SIMPAN SESSION
+// =========================
 
-        session.setAttribute(
-                "role",
-                user.getRole()
-        );
+session.setAttribute(
+        "userId",
+        user.getId()
+);
+
+session.setAttribute(
+        "username",
+        user.getUsername()
+);
+
+session.setAttribute(
+        "role",
+        user.getRole()
+);
+
+// =========================
+// SIMPAN PERMISSION
+// =========================
+
+session.setAttribute(
+        "permissionDashboard",
+        permissionService.hasPermission(
+                user,
+                "DASHBOARD"
+        )
+);
+
+session.setAttribute(
+        "permissionEmployee",
+        permissionService.hasPermission(
+                user,
+                "EMPLOYEE"
+        )
+);
+
+session.setAttribute(
+        "permissionTask",
+        permissionService.hasPermission(
+                user,
+                "TASK"
+        )
+);
+
+session.setAttribute(
+        "permissionUserManagement",
+        permissionService.hasPermission(
+                user,
+                "USER_MANAGEMENT"
+        )
+);
+
+        // =========================
+        // MASUK HOME
+        // =========================
 
         return "redirect:/home";
     }
+
+    // =========================
+    // HOME
+    // =========================
 
     @GetMapping("/home")
     public String home(
@@ -94,9 +173,16 @@ public class LoginController {
         return "home";
     }
 
+    // =========================
+    // LOGOUT
+    // =========================
+
     @GetMapping("/logout")
-    public String logout(HttpSession session) {
+    public String logout(
+            HttpSession session) {
+
         session.invalidate();
+
         return "redirect:/login";
     }
 }
